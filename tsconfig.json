@@ -12,6 +12,13 @@
     "baseUrl": "./",
     "incremental": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "paths": {
+      "@src/*": ["src/*"],
+      "@common/*": ["src/common/*"]
+    }
   }
 }
+
