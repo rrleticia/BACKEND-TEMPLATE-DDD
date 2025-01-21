@@ -5,25 +5,22 @@ import { LoggerMiddleware } from "./common/middleware";
 import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
 import { HttpExceptionFilter } from "./common/filters";
 import { ErrorsInterceptor } from "./common/interceptors";
+import { UserModule } from "./user/user.module";
+
+const HttpFilterProvider = {
+  provide: APP_FILTER,
+  useClass: HttpExceptionFilter,
+};
+
+const ErrorsInterceptorProvider = {
+  provide: APP_INTERCEPTOR,
+  useClass: ErrorsInterceptor,
+};
 
 @Module({
-  imports: [],
+  imports: [UserModule],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ErrorsInterceptor,
-    },
-  ],
+  providers: [AppService, HttpFilterProvider, ErrorsInterceptorProvider],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
