@@ -1,10 +1,12 @@
-import { AsyncMaybe } from '@core/logic';
-import { PageDto, PageMetaDto, PageOptionsDto } from '@core/pagination';
 import { UsersRepository } from '@infra/database/connection/user.repository';
 import { Injectable } from '@nestjs/common';
-import { UserEntity } from '@src/entities';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
+import { UserEntity } from '@entities/user.entity';
+import { AsyncMaybe } from '@core/logic/Maybe';
+import { PageOptionsDto } from '@core/pagination/dto/page-options.dto';
+import { PageDto } from '@core/pagination/dto/page.dto';
+import { PageMetaDto } from '@core/pagination/dto';
 
 @Injectable()
 export class UserService {

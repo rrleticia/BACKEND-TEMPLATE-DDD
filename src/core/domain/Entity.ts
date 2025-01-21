@@ -1,9 +1,13 @@
 import { createId } from '@paralleldrive/cuid2';
+import { Exclude, Expose } from 'class-transformer';
 
 export abstract class Entity<T> {
+  @Exclude()
   protected readonly _id: string;
+  @Exclude()
   public readonly props: T;
 
+  @Expose()
   get id() {
     return this._id;
   }

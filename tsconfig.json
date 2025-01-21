@@ -18,6 +18,7 @@
     "paths": {
       "@common/*": ["src/common/*"],
       "@core/*": ["src/core/*"],
+      "@entities/*": ["src/entities/*"],
       "@infra/*": ["src/infra/*"],
       "@domain/*": ["src/domain/*"],
       "@src/*": ["src/*"]
