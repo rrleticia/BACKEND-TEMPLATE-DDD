@@ -1,11 +1,11 @@
-import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
-import { LoggerMiddleware } from "./common/middleware";
-import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
-import { HttpExceptionFilter } from "./common/filters";
-import { ErrorsInterceptor } from "./common/interceptors";
-import { UserModule } from "./user/user.module";
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { HttpExceptionFilter } from '@src/common/filters';
+import { ErrorsInterceptor } from '@src/common/interceptors';
+import { LoggerMiddleware } from '@src/common/middleware';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { UserModule } from './modules/user/user.module';
 
 const HttpFilterProvider = {
   provide: APP_FILTER,
