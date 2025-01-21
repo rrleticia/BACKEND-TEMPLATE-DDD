@@ -9,7 +9,7 @@ export type UserProps = {
   updatedAt: Date;
 };
 
-export class User extends Entity<UserProps> {
+export class UserEntity extends Entity<UserProps> {
   get email() {
     return this.props.email;
   }
@@ -40,7 +40,7 @@ export class User extends Entity<UserProps> {
     >,
     id?: string
   ) {
-    const user = new User(
+    const user = new UserEntity(
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),

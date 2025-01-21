@@ -1,25 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { AsyncMaybe } from '@src/core';
-import { User } from '@src/entities';
+import { UserEntity } from '@src/entities';
 import { UserMapper } from '../mappers/user.mapper';
 import { PrismaService } from '../prisma.service';
 import { UsersRepository } from '@src/infra/database/connection/user.repository';
+import { PaginationOrder } from '@common/enums/pagination-order.enum';
+import { FindAllType } from '@common/types/find-all.type';
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(): Promise<User[]> {
-    const rawUsers = await this.prisma.user.findMany({});
+  async findAll(
+    order: PaginationOrder,
+    skip: number,
+    limit: number
+  ): Promise<FindAllType> {
+    const rawUsers = await this.prisma.user.findMany({
+      orderBy: {
+        createdAt: order,
+      },
+      skip,
+      take: limit,
+    });
 
-    const users = rawUsers.map((user) => {
+    const itemCount = await this.prisma.user.count({});
+
+    const entities = rawUsers.map((user) => {
       return UserMapper.toDomain(user);
     });
 
-    return users;
+    return { entities, itemCount };
   }
 
-  async findOneById(id: string): AsyncMaybe<User> {
+  async findOneById(id: string): AsyncMaybe<UserEntity> {
     const rawUser = await this.prisma.user.findUnique({ where: { id: id } });
 
     if (!rawUser) {
@@ -29,7 +43,7 @@ export class PrismaUsersRepository implements UsersRepository {
     return UserMapper.toDomain(rawUser);
   }
 
-  async create(user: User): Promise<User> {
+  async create(user: UserEntity): Promise<UserEntity> {
     await this.prisma.user.create({
       data: UserMapper.toPersistence(user),
     });
@@ -37,7 +51,7 @@ export class PrismaUsersRepository implements UsersRepository {
     return user;
   }
 
-  async update(id: string, user: Partial<User>): Promise<User> {
+  async update(id: string, user: Partial<UserEntity>): Promise<UserEntity> {
     const rawUser = await this.prisma.user.update({
       where: { id: id },
       data: user,
@@ -46,7 +60,7 @@ export class PrismaUsersRepository implements UsersRepository {
     return UserMapper.toDomain(rawUser);
   }
 
-  async delete(id: string): AsyncMaybe<User> {
+  async delete(id: string): AsyncMaybe<UserEntity> {
     const rawUser = await this.prisma.user.delete({ where: { id: id } });
 
     if (!rawUser) {

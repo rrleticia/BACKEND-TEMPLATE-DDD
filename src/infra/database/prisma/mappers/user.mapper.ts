@@ -1,9 +1,9 @@
 import { Prisma, User as RawUser } from '@prisma/client';
-import { User } from '@src/entities';
+import { UserEntity } from '@src/entities';
 
 export class UserMapper {
-  static toDomain(raw: RawUser): User {
-    const user = User.create({
+  static toDomain(raw: RawUser): UserEntity {
+    const user = UserEntity.create({
       email: raw.email,
       username: raw.username,
       name: raw.name,
@@ -14,7 +14,7 @@ export class UserMapper {
     return user;
   }
 
-  static toPersistence(user: User): Prisma.UserCreateInput {
+  static toPersistence(user: UserEntity): Prisma.UserCreateInput {
     return {
       email: user.email,
       username: user.username,
