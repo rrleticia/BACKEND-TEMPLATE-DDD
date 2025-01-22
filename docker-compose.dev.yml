@@ -1,5 +1,5 @@
 # docker-compose up -d
-version: "3.9"
+version: '3.9'
 
 services:
   database:
@@ -7,13 +7,13 @@ services:
     container_name: database_dev
     restart: unless-stopped
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - '${POSTGRES_PORT}:5432'
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     env_file:
-      - "./.env"
+      - './.env'
     volumes:
       - pgdata:/data/postgres
     networks:
@@ -27,6 +27,9 @@ services:
       - 8080:8080
     networks:
       - bookdew-dev-network
+
+networks:
+  bookdew-dev-network:
 
 volumes:
   pgdata:

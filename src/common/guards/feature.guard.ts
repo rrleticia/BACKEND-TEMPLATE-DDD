@@ -1,6 +1,6 @@
-import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { FEATURE_KEY } from "@common/decorators";
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { FEATURE_KEY } from '@common/decorators/feature.decorator';
 
 @Injectable()
 export class FeatureGuard implements CanActivate {
