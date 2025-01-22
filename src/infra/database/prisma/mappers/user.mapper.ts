@@ -3,14 +3,16 @@ import { UserEntity } from '@src/entities';
 
 export class UserMapper {
   static toDomain(raw: RawUser): UserEntity {
-    const user = UserEntity.create({
-      email: raw.email,
-      username: raw.username,
-      name: raw.name,
-      createdAt: raw.createdAt,
-      updatedAt: raw.updatedAt,
-    });
-
+    const user = UserEntity.create(
+      {
+        email: raw.email,
+        username: raw.username,
+        name: raw.name,
+        createdAt: raw.createdAt,
+        updatedAt: raw.updatedAt,
+      },
+      raw.id
+    );
     return user;
   }
 

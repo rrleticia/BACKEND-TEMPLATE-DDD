@@ -12,7 +12,7 @@ export class PageSerialDto<T> {
   readonly meta: PageMetaDto;
 
   constructor(data: T[], meta: PageMetaDto, type?: new (...args: any[]) => T) {
-    this.data = type ? plainToInstance(type, data) : data;
+    this.data = plainToInstance(type, data);
     this.meta = meta;
   }
 }
