@@ -2,16 +2,18 @@ import {
   createParamDecorator,
   ExecutionContext,
   NotFoundException,
-} from "@nestjs/common";
+} from '@nestjs/common';
 
 export const Metadata = createParamDecorator(
   (_: unknown, context: ExecutionContext) => {
-    const request = context.switchToHttp().getRequest();
+    const ctx = context.switchToHttp();
+    const request = ctx.getRequest();
+    const metadata = request.metadata;
 
-    if (request.metadata) {
-      return request.metadata;
+    if (metadata) {
+      return metadata;
     } else {
-      throw new NotFoundException();
+      throw new NotFoundException('Metadata does not exist in HTTP context');
     }
   }
 );

@@ -1,17 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { AsyncMaybe } from '@src/core';
 import { UserEntity } from '@src/entities';
-import { FindAllType } from '@common/types/find-all.type';
+import { BaseRepository } from './base.repository';
 
 @Injectable()
-export abstract class UsersRepository {
-  abstract findAll(
-    order: string,
-    skip: number,
-    limit: number
-  ): Promise<FindAllType>;
-  abstract findOneById(id: string): AsyncMaybe<UserEntity>;
-  abstract create(user: Partial<UserEntity>): Promise<UserEntity>;
-  abstract update(id: string, user: Partial<UserEntity>): Promise<UserEntity>;
-  abstract delete(id: string): AsyncMaybe<UserEntity>;
+export abstract class UsersRepository extends BaseRepository<UserEntity> {
+  abstract findOneByEmail(email: string): AsyncMaybe<UserEntity>;
 }

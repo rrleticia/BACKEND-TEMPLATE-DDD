@@ -1,5 +1,5 @@
 import { UsersRepository } from '@infra/database/connection/user.repository';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
 import { UserEntity } from '@entities/user.entity';
@@ -7,6 +7,8 @@ import { AsyncMaybe } from '@core/logic/Maybe';
 import { PageOptionsDto } from '@core/pagination/dto/page-options.dto';
 import { PageDto } from '@core/pagination/dto/page.dto';
 import { PageMetaDto } from '@core/pagination/dto';
+import * as bcrypt from 'bcrypt';
+import { bycryptConstants } from '@common/constants';
 
 @Injectable()
 export class UserService {
@@ -33,6 +35,14 @@ export class UserService {
     }
   }
 
+  async findOneByEmail(email: string): AsyncMaybe<UserEntity> {
+    try {
+      return await this._usersRepository.findOneByEmail(email);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   async findOneById(id: string): AsyncMaybe<UserEntity> {
     try {
       return await this._usersRepository.findOneById(id);
@@ -40,9 +50,11 @@ export class UserService {
       throw e;
     }
   }
+
   async create(data: CreateUserDTO): Promise<UserEntity> {
     try {
-      return await this._usersRepository.create(data);
+      const processedData = await this._hashPassword(data);
+      return await this._usersRepository.create(processedData);
     } catch (e) {
       throw e;
     }
@@ -62,5 +74,23 @@ export class UserService {
     } catch (e) {
       throw e;
     }
+  }
+
+  private async _hashPassword(user: CreateUserDTO): Promise<CreateUserDTO> {
+    const password = user.password;
+    if (!password) {
+      throw new BadRequestException(
+        'Invalid input for password field of User.'
+      );
+    }
+
+    const hashedPassword = await bcrypt.hash(
+      password,
+      bycryptConstants.saltRounds
+    );
+
+    user.password = hashedPassword;
+
+    return user;
   }
 }

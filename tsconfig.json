@@ -21,6 +21,7 @@
       "@entities/*": ["src/entities/*"],
       "@infra/*": ["src/infra/*"],
       "@domain/*": ["src/domain/*"],
+      "@modules/*": ["src/app/modules/*"],
       "@src/*": ["src/*"]
     }
   }

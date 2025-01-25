@@ -42,7 +42,7 @@ export class UserController {
   async getAll(
     @Query() pageOptionsDto: PageOptionsDto
   ): Promise<PageDto<UserEntity>> {
-    const { data, meta } = await this._userService.getAll(pageOptionsDto);
+    const { data, meta } = await this._userService.findAll(pageOptionsDto);
     const transformedData = data.map((user) =>
       instanceToPlain(user)
     ) as UserEntity[];
@@ -54,7 +54,7 @@ export class UserController {
   @GetOneUserByIdSummary()
   @GetOneUserByIdResponse()
   async getOneById(@Param('id') id: string): AsyncMaybe<UserEntity> {
-    const user = await this._userService.getOneById(id);
+    const user = await this._userService.findOneById(id);
     return new UserEntity(user, user.id);
   }
 

@@ -33,6 +33,18 @@ export class PrismaUsersRepository implements UsersRepository {
     return { entities, itemCount };
   }
 
+  async findOneByEmail(email: string): AsyncMaybe<UserEntity> {
+    const rawUser = await this.prisma.user.findUnique({
+      where: { email: email },
+    });
+
+    if (!rawUser) {
+      return undefined;
+    }
+
+    return UserMapper.toDomain(rawUser);
+  }
+
   async findOneById(id: string): AsyncMaybe<UserEntity> {
     const rawUser = await this.prisma.user.findUnique({ where: { id: id } });
 

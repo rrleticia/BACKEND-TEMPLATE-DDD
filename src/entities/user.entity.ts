@@ -1,17 +1,23 @@
 import { Entity } from '@src/core/domain/Entity';
 import { Replace } from '@core/logic/Replace';
 import { Exclude, Expose } from 'class-transformer';
+import { Role } from '@common/enums';
 
 export type UserProps = {
   email: string;
   username: string;
   password?: string;
   name?: string;
+  role: Role;
   createdAt: Date;
   updatedAt: Date;
 };
 
 export class UserEntity extends Entity<UserProps> {
+  set password(password: string) {
+    this.props.password = password;
+  }
+
   @Expose()
   get email() {
     return this.props.email;
@@ -30,6 +36,11 @@ export class UserEntity extends Entity<UserProps> {
   @Expose()
   get name() {
     return this.props.name;
+  }
+
+  @Exclude()
+  get role() {
+    return this.props.role;
   }
 
   @Exclude()
