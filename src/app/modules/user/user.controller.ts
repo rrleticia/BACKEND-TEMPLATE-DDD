@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDTO } from './dto/create-user.dto';
@@ -29,6 +30,7 @@ import {
   UpdateUserSummary,
 } from './swagger/user-response.decorator';
 import { instanceToPlain } from 'class-transformer';
+import { SkipAuth } from '@common/decorators';
 
 @ApiTags('user')
 @Controller('user')
@@ -59,6 +61,7 @@ export class UserController {
   }
 
   @Post()
+  @SkipAuth()
   @HttpCode(201)
   @CreateUserSummary()
   @CreateUserResponse()

@@ -16,9 +16,12 @@ import { ExpireDate } from '@common/util';
 import { jwtConstants } from '@common/constants';
 import { AuthLoginDTO } from './dto/auth-login-dto';
 import { UserService } from '@modules/user/user.service';
-import { Metadata } from '@common/decorators';
+import { Metadata, SkipAuth } from '@common/decorators';
 import { UserEntity } from '@entities/user.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@SkipAuth()
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(

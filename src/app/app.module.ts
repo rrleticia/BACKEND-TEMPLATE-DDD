@@ -8,16 +8,12 @@ import {
   ErrorsInterceptorProvider,
   AuthenticationGuard,
 } from '@common/constants';
+import { MyConfigModule } from '@modules/config/config.module';
 import { UserModule } from '@modules/user/user.module';
+import { AuthModule } from '@modules/auth/auth.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: ['.env'],
-    }),
-    UserModule,
-  ],
+  imports: [MyConfigModule, AuthModule, UserModule],
   controllers: [AppController],
   providers: [
     AppService,
@@ -28,6 +24,6 @@ import { UserModule } from '@modules/user/user.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).exclude().forRoutes();
+    consumer.apply(LoggerMiddleware).exclude().forRoutes('user');
   }
 }

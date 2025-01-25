@@ -20,7 +20,7 @@ export class UpdateUserDTO {
   @IsString()
   @IsNotEmpty({ message: 'Password cannot be empty' })
   @MinLength(8, { message: 'Password must be at least 8 characters long' })
-  @ApiProperty({ example: 'StrongP@ssw0rd', required: true })
+  @ApiProperty({ example: 'StrongP@ssw0rd', required: false })
   @Matches(
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
     {

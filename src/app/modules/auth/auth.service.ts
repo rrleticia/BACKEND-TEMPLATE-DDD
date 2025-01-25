@@ -10,13 +10,19 @@ import { UserEntity } from '@entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { jwtConstants } from '@common/constants';
 import { getRole } from '@common/util';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private configService: ConfigService
   ) {}
+
+  getJwtSecret(): string {
+    return this.configService.get<string>('jwt.secret');
+  }
 
   async validateUser(
     email: string,

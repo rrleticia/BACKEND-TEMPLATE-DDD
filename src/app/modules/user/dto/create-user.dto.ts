@@ -1,3 +1,4 @@
+import { Role } from '@common/enums';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
@@ -6,6 +7,7 @@ import {
   MinLength,
   IsOptional,
   Matches,
+  IsEnum,
 } from 'class-validator';
 
 export class CreateUserDTO {
@@ -39,4 +41,10 @@ export class CreateUserDTO {
   @IsNotEmpty()
   @ApiProperty({ default: 'Logan Who', required: false })
   name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsEnum(Role)
+  @ApiProperty({ default: 'USER', required: true })
+  role: Role;
 }
