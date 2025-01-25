@@ -6,7 +6,7 @@ import { LoggerMiddleware } from '@common/middleware/logger.middleware';
 import {
   HttpFilterProvider,
   ErrorsInterceptorProvider,
-  AuthGuard,
+  AuthenticationGuard,
 } from '@common/constants';
 
 @Module({
@@ -16,7 +16,7 @@ import {
     AppService,
     HttpFilterProvider,
     ErrorsInterceptorProvider,
-    AuthGuard,
+    AuthenticationGuard,
   ],
 })
 export class AppModule implements NestModule {

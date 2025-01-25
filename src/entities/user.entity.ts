@@ -5,6 +5,7 @@ import { Exclude, Expose } from 'class-transformer';
 export type UserProps = {
   email: string;
   username: string;
+  password?: string;
   name?: string;
   createdAt: Date;
   updatedAt: Date;
@@ -19,6 +20,11 @@ export class UserEntity extends Entity<UserProps> {
   @Expose()
   get username() {
     return this.props.username;
+  }
+
+  @Exclude()
+  get password() {
+    return this.props.password;
   }
 
   @Expose()

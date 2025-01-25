@@ -1,6 +1,7 @@
 import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
+import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
 import { ErrorsInterceptor } from '@common/interceptors/errors.interceptor';
-import { AuthGuard as AuthGuardOriginal } from '@common/guards/auth.guard';
+
 import { APP_FILTER, APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 
 export const HttpFilterProvider = {
@@ -13,7 +14,7 @@ export const ErrorsInterceptorProvider = {
   useClass: ErrorsInterceptor,
 };
 
-export const AuthGuard = {
+export const AuthenticationGuard = {
   provide: APP_GUARD,
-  useClass: AuthGuardOriginal,
+  useClass: JwtAuthGuard,
 };

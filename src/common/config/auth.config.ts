@@ -6,7 +6,7 @@ export default class JwtConfig {
     return {
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '15d' },
     };
   }
 }
