@@ -12,7 +12,7 @@ import { PageMetaDto } from '@core/pagination/dto';
 export class UserService {
   constructor(private readonly _usersRepository: UsersRepository) {}
 
-  async getAll(pageOptionsDto: PageOptionsDto): Promise<PageDto<UserEntity>> {
+  async findAll(pageOptionsDto: PageOptionsDto): Promise<PageDto<UserEntity>> {
     try {
       const { order, skip, limit } = pageOptionsDto;
 
@@ -33,7 +33,7 @@ export class UserService {
     }
   }
 
-  async getOneById(id: string): AsyncMaybe<UserEntity> {
+  async findOneById(id: string): AsyncMaybe<UserEntity> {
     try {
       return await this._usersRepository.findOneById(id);
     } catch (e) {
