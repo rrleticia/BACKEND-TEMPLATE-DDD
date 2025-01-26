@@ -19,37 +19,37 @@ export class UserEntity extends Entity<UserProps> {
   }
 
   @Expose()
-  get email() {
+  get email(): string {
     return this.props.email;
   }
 
   @Expose()
-  get username() {
+  get username(): string {
     return this.props.username;
   }
 
   @Exclude()
-  get password() {
+  get password(): string {
     return this.props.password;
   }
 
   @Expose()
-  get name() {
+  get name(): string {
     return this.props.name;
   }
 
   @Exclude()
-  get role() {
+  get role(): Role {
     return this.props.role;
   }
 
   @Exclude()
-  get createdAt() {
+  get createdAt(): Date {
     return this.props.createdAt;
   }
 
   @Exclude()
-  get updatedAt() {
+  get updatedAt(): Date {
     return this.props.updatedAt;
   }
 

@@ -1,26 +1,23 @@
 import {
+  Body,
   Controller,
   Get,
   Post,
   Req,
   Res,
   UseGuards,
-  Request,
-  Body,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from '@common/guards';
 import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
-import { Response as ExpResponse } from 'express';
+import { Request as ExpRequest, Response as ExpResponse } from 'express';
 import { ExpireDate } from '@common/util';
 import { jwtConstants } from '@common/constants';
-import { AuthLoginDTO } from './dto/auth-login-dto';
 import { UserService } from '@modules/user/user.service';
 import { Metadata, SkipAuth } from '@common/decorators';
 import { UserEntity } from '@entities/user.entity';
 import { ApiTags } from '@nestjs/swagger';
 
-@SkipAuth()
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -36,15 +33,16 @@ export class AuthController {
     return new UserEntity(user, user.id);
   }
 
+  @SkipAuth()
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(
-    @Body() authLoginDTO: AuthLoginDTO,
-    @Res({ passthrough: true }) res: ExpResponse
+    @Req() request: ExpRequest,
+    @Res({ passthrough: true }) response: ExpResponse
   ): Promise<void> {
-    const { email, password } = authLoginDTO;
-    const { access_token } = await this._authService.login(email, password);
-    res
+    console.log(request);
+    const { access_token } = await this._authService.login(request.user);
+    response
       .cookie('access_token', access_token, {
         httpOnly: true,
         secure: false,
@@ -57,8 +55,10 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@Res({ passthrough: true }) res: ExpResponse): Promise<void> {
-    res
+  async logout(
+    @Res({ passthrough: true }) response: ExpResponse
+  ): Promise<void> {
+    response
       .clearCookie('access_token', {
         httpOnly: true,
         secure: false, // Change to true in production

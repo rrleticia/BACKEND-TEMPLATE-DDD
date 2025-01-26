@@ -1,5 +1,5 @@
 import { Role } from '@common/enums';
-import { Prisma, User as RawUser } from '@prisma/client';
+import { Prisma, User as RawUser, Role as RawRole } from '@prisma/client';
 import { UserEntity } from '@src/entities';
 
 export class UserMapper {
@@ -25,7 +25,7 @@ export class UserMapper {
       password: user.password,
       username: user.username,
       name: user.name,
-      role: user.role,
+      role: user.role as RawRole,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };

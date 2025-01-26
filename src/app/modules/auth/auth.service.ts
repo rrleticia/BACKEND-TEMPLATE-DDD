@@ -30,45 +30,41 @@ export class AuthService {
   ): AsyncMaybe<Partial<UserEntity>> {
     const user = await this.userService.findOneByEmail(email);
 
-    if (user) {
-      throw new NotFoundException(
-        'The user could not be found in the database.'
-      );
+    if (!user) {
+      return undefined;
     }
+
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      throw new UnauthorizedException(
-        'The user credentials are invalid. There was an error matching the password.'
-      );
+      return undefined;
     }
 
-    const { password: _, ...result } = user;
+    delete user.props.password;
 
-    return result;
+    return user;
   }
 
-  async login(
-    email: string,
-    password: string
-  ): Promise<{ access_token: string }> {
-    const user = await this.validateUser(email, password);
+  async login(user: Partial<UserEntity>): Promise<{ access_token: string }> {
+    const roleData = getRole(user.role);
 
-    const { audience, featurePermissions } = getRole(user.role);
+    const { audience, featurePermissions } = roleData;
 
     const payload = {
-      id: user.id,
-      name: user.username,
+      sub: user.id,
+      username: user.username,
       featurePermissions,
     };
 
     const issuer = 'login';
     const expiresIn = jwtConstants.expiresIn;
+    const secret = this.getJwtSecret();
 
     const options = {
       expiresIn,
       audience,
       issuer,
+      secret,
     };
 
     const token = this.jwtService.sign(payload, options);

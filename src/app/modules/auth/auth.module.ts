@@ -12,7 +12,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 @Module({
   imports: [
     DatabaseModule,
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule,
     JwtModule.registerAsync(JwtConfigAsync),
     forwardRef(() => UserModule),
   ],
