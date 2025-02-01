@@ -1,5 +1,9 @@
 import { IS_PUBLIC_KEY } from '@common/decorators';
-import { Injectable, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  ExecutionContext,
+  ForbiddenException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -14,10 +18,33 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       context.getHandler(),
       context.getClass(),
     ]);
+
     if (isPublic) {
       return true;
     }
 
-    return super.canActivate(context);
+    const canActivate = super.canActivate(context);
+
+    if (!canActivate) {
+      return false;
+    }
+
+    const ctx = context.switchToHttp();
+    const request = ctx.getRequest();
+    const user = request.user;
+    const routePath = request.route?.path;
+
+    if (!user || !user.audience) {
+      throw new ForbiddenException('User audience not found.');
+    }
+
+    const hasValidAudience = user.audience.some((aud: string) =>
+      routePath.startsWith(aud)
+    );
+    if (!hasValidAudience) {
+      throw new ForbiddenException('User does not have access to this route.');
+    }
+
+    return true;
   }
 }

@@ -15,20 +15,20 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
-    private jwtService: JwtService,
-    private configService: ConfigService
+    private _userService: UserService,
+    private _jwtService: JwtService,
+    private _configService: ConfigService
   ) {}
 
   getJwtSecret(): string {
-    return this.configService.get<string>('jwt.secret');
+    return this._configService.get<string>('jwt.secret');
   }
 
   async validateUser(
     email: string,
     password: string
   ): AsyncMaybe<Partial<UserEntity>> {
-    const user = await this.userService.findOneByEmail(email);
+    const user = await this._userService.findOneByEmail(email);
 
     if (!user) {
       return undefined;
@@ -67,7 +67,7 @@ export class AuthService {
       secret,
     };
 
-    const token = this.jwtService.sign(payload, options);
+    const token = this._jwtService.sign(payload, options);
 
     return {
       access_token: token,

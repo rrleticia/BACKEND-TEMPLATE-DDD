@@ -7,7 +7,7 @@ import { AsyncMaybe } from '@core/logic/Maybe';
 import { PageOptionsDto } from '@core/pagination/dto/page-options.dto';
 import { PageDto } from '@core/pagination/dto/page.dto';
 import { PageMetaDto } from '@core/pagination/dto';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { bycryptConstants } from '@common/constants';
 
 @Injectable()

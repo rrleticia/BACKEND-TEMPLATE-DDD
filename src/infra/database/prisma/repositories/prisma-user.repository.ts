@@ -6,6 +6,7 @@ import { PrismaService } from '../prisma.service';
 import { UsersRepository } from '@src/infra/database/connection/user.repository';
 import { PaginationOrder } from '@common/enums/pagination-order.enum';
 import { FindAllType } from '@common/types/find-all.type';
+import { Role } from '@common/enums';
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
@@ -17,6 +18,9 @@ export class PrismaUsersRepository implements UsersRepository {
     limit: number
   ): Promise<FindAllType> {
     const rawUsers = await this.prisma.user.findMany({
+      where: {
+        role: Role.USER,
+      },
       orderBy: {
         createdAt: order,
       },

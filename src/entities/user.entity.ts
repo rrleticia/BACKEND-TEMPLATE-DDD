@@ -38,7 +38,7 @@ export class UserEntity extends Entity<UserProps> {
     return this.props.name;
   }
 
-  @Exclude()
+  @Expose()
   get role(): Role {
     return this.props.role;
   }
