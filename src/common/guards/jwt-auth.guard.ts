@@ -1,4 +1,5 @@
 import { IS_PUBLIC_KEY } from '@common/decorators';
+import { AuthService } from '@modules/auth/auth.service';
 import {
   Injectable,
   ExecutionContext,
@@ -9,7 +10,10 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  constructor(private reflector: Reflector) {
+  constructor(
+    private reflector: Reflector,
+    private readonly _authService: AuthService
+  ) {
     super();
   }
 
@@ -31,20 +35,34 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     const ctx = context.switchToHttp();
     const request = ctx.getRequest();
-    const user = request.user;
-    const routePath = request.route?.path;
 
-    if (!user || !user.audience) {
-      throw new ForbiddenException('User audience not found.');
+    const routePath = request.originalUrl;
+    const token = request.cookies?.access_token;
+
+    let options_metadata;
+
+    try {
+      console.log('Token recebido:', token);
+
+      options_metadata = this._authService.verifyToken(token);
+
+      console.log('Metadata do token:', options_metadata);
+    } catch (e) {
+      console.error('Erro ao verificar token:', e);
+      return false;
     }
 
-    const hasValidAudience = user.audience.some((aud: string) =>
-      routePath.startsWith(aud)
-    );
+    const audience = options_metadata.aud;
+    console.log(routePath);
+
+    const hasValidAudience = audience.some((aud: string) => {
+      return routePath.startsWith(aud);
+    });
+
     if (!hasValidAudience) {
       throw new ForbiddenException('User does not have access to this route.');
     }
-
+    console.info('User logged in successfully');
     return true;
   }
 }

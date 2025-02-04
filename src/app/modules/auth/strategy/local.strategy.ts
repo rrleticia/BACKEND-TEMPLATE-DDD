@@ -16,14 +16,12 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     email: string,
     password: string
   ): Promise<Partial<UserEntity>> {
-    console.log('here');
     const user = await this.authService.validateUser(email, password);
     if (!user) {
       throw new UnauthorizedException(
         'The user has not been authorized. Try again.'
       );
     }
-    console.log('ok');
     return user;
   }
 }

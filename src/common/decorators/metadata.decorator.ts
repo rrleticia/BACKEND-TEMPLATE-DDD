@@ -8,7 +8,7 @@ export const Metadata = createParamDecorator(
   (_: unknown, context: ExecutionContext) => {
     const ctx = context.switchToHttp();
     const request = ctx.getRequest();
-    const metadata = request.metadata;
+    const metadata = request.user;
 
     if (metadata) {
       return metadata;

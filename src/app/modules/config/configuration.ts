@@ -1,7 +1,7 @@
 export default () => ({
   app: {
-    name: process.env.APPNAME ?? '',
-    version: process.env.APPVERSION ?? '1.0.0',
+    name: process.env.APP_NAME ?? '',
+    version: process.env.APP_VERSION ?? '1.0.0',
     port: process.env.APP_PORT ?? 3000,
     prefix: process.env.APP_PREFIX ?? 'api',
   },
@@ -17,6 +17,7 @@ export default () => ({
   },
   jwt: {
     secret: process.env.JWT_SECRET_KEY,
+    issuer: process.env.JWT_SECRET_ISSUER,
   },
   admin: {
     password: process.env.ADMIN_PASSWORD,

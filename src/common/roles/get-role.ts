@@ -1,4 +1,4 @@
-import { Roles } from '@common/constants/roles';
+import { Roles } from '@common/roles/roles';
 import { Role } from '@common/enums';
 import { RoleType } from '@common/types';
 

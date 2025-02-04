@@ -16,7 +16,8 @@ import { jwtConstants } from '@common/constants';
 import { UserService } from '@modules/user/user.service';
 import { Metadata, SkipAuth } from '@common/decorators';
 import { UserEntity } from '@entities/user.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { AuthLoginDTO } from './dto/auth-login-dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -26,21 +27,20 @@ export class AuthController {
     private _userService: UserService
   ) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Metadata() metadata): Promise<UserEntity> {
+    console.log(metadata);
     const user = await this._userService.findOneById(metadata.id);
     return new UserEntity(user, user.id);
   }
 
-  @SkipAuth()
   @UseGuards(LocalAuthGuard)
+  @ApiBody({ type: AuthLoginDTO })
   @Post('login')
   async login(
     @Req() request: ExpRequest,
     @Res({ passthrough: true }) response: ExpResponse
   ): Promise<void> {
-    console.log(request);
     const { access_token } = await this._authService.login(request.user);
     response
       .cookie('access_token', access_token, {
@@ -50,10 +50,9 @@ export class AuthController {
         expires: ExpireDate(jwtConstants.expiresInNum),
       })
       .status(200)
-      .send({ status: 'logged in' });
+      .send({ code: 200, status: 'User successfully logged in.' });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(
     @Res({ passthrough: true }) response: ExpResponse
@@ -65,6 +64,6 @@ export class AuthController {
         sameSite: 'lax',
       })
       .status(200)
-      .send({ status: 'logged out' });
+      .send({ code: 200, status: 'User successfully logged out.' });
   }
 }
