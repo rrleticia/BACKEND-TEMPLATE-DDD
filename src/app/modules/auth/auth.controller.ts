@@ -1,23 +1,17 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from '@common/guards';
-import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
 import { Request as ExpRequest, Response as ExpResponse } from 'express';
 import { ExpireDate } from '@common/util';
 import { jwtConstants } from '@common/constants';
 import { UserService } from '@modules/user/user.service';
-import { Metadata, SkipAuth } from '@common/decorators';
 import { UserEntity } from '@entities/user.entity';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { AuthLoginDTO } from './dto/auth-login-dto';
+import { Roles } from '@common/roles';
+import { Role } from '@common/enums';
+import { JwtPayload, SkipAuth } from '@common/decorators';
+import { JwtPayloadType } from '@common/types/jwt-payload.type';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -27,13 +21,16 @@ export class AuthController {
     private _userService: UserService
   ) {}
 
+  @Roles(Role.ADMIN, Role.USER)
   @Get('profile')
-  async getProfile(@Metadata() metadata): Promise<UserEntity> {
-    console.log(metadata);
-    const user = await this._userService.findOneById(metadata.id);
+  async getProfile(
+    @JwtPayload() jwtPayload: JwtPayloadType
+  ): Promise<UserEntity> {
+    const user = await this._userService.findOneById(jwtPayload.id);
     return new UserEntity(user, user.id);
   }
 
+  @SkipAuth()
   @UseGuards(LocalAuthGuard)
   @ApiBody({ type: AuthLoginDTO })
   @Post('login')
@@ -45,12 +42,16 @@ export class AuthController {
     response
       .cookie('access_token', access_token, {
         httpOnly: true,
-        secure: false,
+        secure: false, // Change to true in production
         sameSite: 'lax',
         expires: ExpireDate(jwtConstants.expiresInNum),
       })
       .status(200)
-      .send({ code: 200, status: 'User successfully logged in.' });
+      .send({
+        code: 200,
+        status: 'User successfully logged in.',
+        timestamp: new Date().toISOString(),
+      });
   }
 
   @Post('logout')
@@ -64,6 +65,10 @@ export class AuthController {
         sameSite: 'lax',
       })
       .status(200)
-      .send({ code: 200, status: 'User successfully logged out.' });
+      .send({
+        code: 200,
+        status: 'User successfully logged out.',
+        timestamp: new Date().toISOString(),
+      });
   }
 }

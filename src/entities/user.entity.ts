@@ -8,7 +8,7 @@ export type UserProps = {
   username: string;
   password?: string;
   name?: string;
-  role: Role;
+  roles: Role[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -39,8 +39,8 @@ export class UserEntity extends Entity<UserProps> {
   }
 
   @Expose()
-  get role(): Role {
-    return this.props.role;
+  get roles(): Role[] {
+    return this.props.roles;
   }
 
   @Exclude()

@@ -19,7 +19,7 @@ export class PrismaUsersRepository implements UsersRepository {
   ): Promise<FindAllType> {
     const rawUsers = await this.prisma.user.findMany({
       where: {
-        role: Role.USER,
+        roles: { has: Role.USER },
       },
       orderBy: {
         createdAt: order,

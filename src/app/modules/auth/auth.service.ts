@@ -6,7 +6,6 @@ import { UserEntity } from '@entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { jwtConstants } from '@common/constants';
 import { ConfigService } from '@nestjs/config';
-import { getRole } from '@common/roles';
 
 @Injectable()
 export class AuthService {
@@ -46,14 +45,10 @@ export class AuthService {
   }
 
   async login(user: Partial<UserEntity>): Promise<{ access_token: string }> {
-    const roleData = getRole(user.role);
-
-    const { audience, featurePermissions } = roleData;
-
     const payload = {
       sub: user.id,
       email: user.email,
-      featurePermissions,
+      roles: user.roles,
     };
 
     const expiresIn = jwtConstants.expiresIn;
@@ -62,7 +57,6 @@ export class AuthService {
 
     const options = {
       expiresIn,
-      audience,
       issuer,
       secret,
     };

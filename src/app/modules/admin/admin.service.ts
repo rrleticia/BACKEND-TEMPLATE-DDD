@@ -36,7 +36,7 @@ export class AdminService {
     }
 
     const admin = await this._usersRepository.update(user.id, {
-      role: Role.ADMIN,
+      roles: [Role.ADMIN, Role.USER],
     });
 
     return admin;

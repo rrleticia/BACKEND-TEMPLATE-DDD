@@ -54,7 +54,12 @@ export class UserService {
   async create(data: CreateUserDTO): Promise<UserEntity> {
     try {
       const processedData = await this._hashPassword(data);
-      return await this._usersRepository.create(processedData);
+      const roles = [processedData.role];
+      delete processedData.role;
+      return await this._usersRepository.create({
+        roles: roles,
+        ...processedData,
+      });
     } catch (e) {
       throw e;
     }

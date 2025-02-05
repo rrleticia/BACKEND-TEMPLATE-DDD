@@ -1,2 +1,2 @@
-export * from './get-role';
-export * from './roles';
+export * from './role.decorator';
+export * from './roles.guard';

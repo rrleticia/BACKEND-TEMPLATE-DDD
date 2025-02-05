@@ -10,7 +10,7 @@ export class UserMapper {
         password: raw.password,
         username: raw.username,
         name: raw.name,
-        role: raw.role as Role,
+        roles: raw.roles as Role[],
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },
@@ -25,7 +25,7 @@ export class UserMapper {
       password: user.password,
       username: user.username,
       name: user.name,
-      role: user.role as RawRole,
+      roles: user.roles as RawRole[],
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };

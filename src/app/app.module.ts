@@ -6,6 +6,7 @@ import {
   HttpFilterProvider,
   ErrorsInterceptorProvider,
   AuthenticationGuard,
+  AppRolesGuard,
 } from '@common/constants';
 import { MyConfigModule } from '@modules/config/config.module';
 import { UserModule } from '@modules/user/user.module';
@@ -19,6 +20,7 @@ import { AuthModule } from '@modules/auth/auth.module';
     HttpFilterProvider,
     ErrorsInterceptorProvider,
     AuthenticationGuard,
+    AppRolesGuard,
   ],
 })
 export class AppModule implements NestModule {
