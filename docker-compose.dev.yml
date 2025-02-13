@@ -1,0 +1,35 @@
+# docker-compose up -d
+
+services:
+  database:
+    image: postgres:alpine
+    container_name: database_dev
+    restart: unless-stopped
+    ports:
+      - '${DB_PORT}:5432'
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    env_file:
+      - './.env'
+    volumes:
+      - pgdata:/data/postgres
+    networks:
+      - bookdew-dev-network
+
+  adminer_dev:
+    image: adminer
+    container_name: adminer_dev
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - bookdew-dev-network
+
+networks:
+  bookdew-dev-network:
+
+volumes:
+  pgdata:
+    driver: local
