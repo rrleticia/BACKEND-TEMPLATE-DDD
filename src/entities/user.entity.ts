@@ -1,5 +1,4 @@
 import { Entity } from '@src/core/domain/Entity';
-import { Replace } from '@core/logic/Replace';
 import { Exclude, Expose } from 'class-transformer';
 import { Role } from '@common/enums';
 
@@ -53,21 +52,12 @@ export class UserEntity extends Entity<UserProps> {
     return this.props.updatedAt;
   }
 
-  static create(
-    props: Replace<
-      UserProps,
-      {
-        createdAt: Date;
-        updatedAt: Date;
-      }
-    >,
-    id?: string
-  ) {
+  static create(props: UserProps, id?: string) {
     const user = new UserEntity(
       {
         ...props,
-        createdAt: props.createdAt ?? new Date(),
-        updatedAt: props.updatedAt ?? new Date(),
+        createdAt: props.createdAt,
+        updatedAt: props.updatedAt,
       },
       id
     );
