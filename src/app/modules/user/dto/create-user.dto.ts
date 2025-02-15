@@ -8,6 +8,7 @@ import {
   IsOptional,
   Matches,
   IsEnum,
+  IsBoolean,
 } from 'class-validator';
 
 export class CreateUserDTO {
@@ -46,5 +47,10 @@ export class CreateUserDTO {
   @IsNotEmpty()
   @IsEnum(Role)
   @ApiProperty({ default: 'USER', required: true })
-  role: Role;
+  roles: Role[];
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty({ default: true, required: false })
+  evalutePassword: boolean;
 }

@@ -1,3 +1,5 @@
+import { bycryptConstants } from '@common/constants';
+
 export default () => ({
   app: {
     name: process.env.APP_NAME ?? '',
@@ -18,6 +20,9 @@ export default () => ({
   jwt: {
     secret: process.env.JWT_SECRET_KEY,
     issuer: process.env.JWT_SECRET_ISSUER,
+  },
+  bycrypt: {
+    saltRounds: process.env.SALT_ROUNDS ?? 11,
   },
   admin: {
     password: process.env.ADMIN_PASSWORD,

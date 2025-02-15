@@ -3,7 +3,3 @@ export const jwtConstants = {
   expiresIn: '15d',
   expiresInNum: 15,
 };
-
-export const bycryptConstants = {
-  saltRounds: 11,
-};
