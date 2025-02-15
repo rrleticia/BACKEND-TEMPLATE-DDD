@@ -3,10 +3,10 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { DatabaseModule } from '@infra/database/database.module';
 import { AuthModule } from '@modules/auth/auth.module';
-import { PwnedService } from '@modules/pwned/pwned.service';
+import { PwnedModule } from '@modules/pwned/pwned.module';
 
 @Module({
-  imports: [DatabaseModule, PwnedService, forwardRef(() => AuthModule)],
+  imports: [DatabaseModule, PwnedModule, forwardRef(() => AuthModule)],
   providers: [UserService],
   controllers: [UserController],
   exports: [UserService],
