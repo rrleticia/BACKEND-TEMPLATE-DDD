@@ -40,6 +40,9 @@ export class PrismaUsersRepository implements UsersRepository {
   async findOneByEmail(email: string): AsyncMaybe<UserEntity> {
     const rawUser = await this.prisma.user.findUnique({
       where: { email: email },
+      omit: {
+        password: false,
+      },
     });
 
     if (!rawUser) {

@@ -10,6 +10,11 @@ export class PrismaService
   constructor() {
     super({
       log: ['warn', 'error'],
+      omit: {
+        user: {
+          password: true,
+        },
+      },
     });
   }
 

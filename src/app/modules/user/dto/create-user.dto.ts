@@ -51,6 +51,6 @@ export class CreateUserDTO {
 
   @IsBoolean()
   @IsOptional()
-  @ApiProperty({ default: true, required: false })
+  @ApiProperty({ default: false, required: false })
   evalutePassword: boolean;
 }
