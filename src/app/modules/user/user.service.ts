@@ -20,7 +20,7 @@ export class UserService {
   ) {}
 
   private getSaltRounds(): string {
-    return this._configService.get<string>('bycrypt.bycryptConstants;');
+    return this._configService.get<string>('bycrypt.saltRounds');
   }
 
   async findAll(pageOptionsDto: PageOptionsDto): Promise<PageDto<UserEntity>> {

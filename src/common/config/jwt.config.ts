@@ -13,5 +13,5 @@ export default class JwtConfig {
 
 export const JwtConfigAsync: JwtModuleAsyncOptions = {
   useFactory: async (): Promise<JwtModuleAsyncOptions> =>
-    JwtConfig.getJwtConfig(),
+    JwtConfig.getJwtConfig(),] 
 };
